@@ -5,7 +5,7 @@ from supabase import create_client, Client
 import json
 from pprint import pprint
 import dash
-from dash import Dash, dcc, html, Input, Output
+from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.express as px
 
 load_dotenv()
@@ -42,12 +42,9 @@ while True:
         .execute()
     )
     data = response.data
-
     if not data:
         break
-
     all_data.extend(data)
-
     if len(all_data) >= response.count:
         break
     page_number += 1
@@ -55,7 +52,10 @@ while True:
 df = pd.DataFrame(all_data)
 
 dfgri = df.groupby("route_id")
+dfgric = dfgri.count()
 
+
+headers = dfgric.columns.to_list()
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
     print(dfgri.count())
@@ -68,6 +68,11 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'd
 ### `dash.page_container` is where selected pages will fill in. the rest of the explicitly defined html will will render around it 
 app.layout = html.Div([
         html.H1("Look at all the data!!"),
+        dash_table.DataTable(
+            id="table-container",
+            columns=[{"name": i, "id": i} for i in headers],
+            data=dfgric.to_dict('records'),
+        ),
         html.Div([
         html.Div(
             dcc.Link(f"{page['name']}", href=page["relative_path"])
