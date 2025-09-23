@@ -25,3 +25,31 @@ ultimately, this app would be most useful if it could:
 [] visualize the above query
 [] connect hauler time to labor time
     - that is, connect DS Hauler time from rbr.regular_hours to rbr.stops
+
+
+### Phx page
+[] set up dataframes
+    [] sum total products
+    [] map to QB products
+[] create user-input id column (actually the filename can just be the id)
+[] generate consignment info
+    - 85% expected check amount
+    - % to each class
+[] generate csv to create invoice for phx
+    - product lines
+    - amt totals
+    - classes
+    - date
+    - due date
+    - vendor (phx)
+    - inv #
+[] download csv
+[] create tables in supabase
+    - checks table
+        - check num
+        - check amt
+        - expected amt
+        - id (the filename)
+    - actual phx info
+        - main df loaded into the csv
+[] load finished data into supabase

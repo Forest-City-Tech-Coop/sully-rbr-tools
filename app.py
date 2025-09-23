@@ -56,11 +56,6 @@ dfgric = dfgri.count()
 
 
 headers = dfgric.columns.to_list()
-
-with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
-    print(dfgri.count())
-
-
 #### webapp structure
 
 ##### main page layout
@@ -74,7 +69,7 @@ app.layout = html.Div([
             data=dfgric.to_dict('records'),
         ),
         html.Div([
-        html.Div(
+        html.Nav(
             dcc.Link(f"{page['name']}", href=page["relative_path"])
         ) for page in dash.page_registry.values()
         ]),

@@ -49,6 +49,12 @@ def parse_contents(contents, filename):
     for col in int_columns:
         df[col] = df[col].astype(str)
 
+    groups = df.groupby("Item Variation").sum("Gross Sales")
+    groups1 = groups.sort_values(by="Location")
+    
+
+    print(groups1.columns)
+
     # Return as DataTable
     return html.Div([
         html.H5(filename),
@@ -57,7 +63,7 @@ def parse_contents(contents, filename):
             columns=[{'name': i, 'id': i} for i in df.columns],
             page_size=10,
             style_table={'overflowX': 'auto'}
-        )
+        ),
     ])
 
 @callback(
