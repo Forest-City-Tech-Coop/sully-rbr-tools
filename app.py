@@ -19,7 +19,7 @@ supabase: Client = create_client(url, key)
 ######## Dash app
 
 app = Dash(__name__, use_pages=True)
-port = 8050
+port = 8080
 
 ##### Data Functions
 page_size = 1000
@@ -79,4 +79,4 @@ app.layout = html.Div([
 
 if __name__ == "__main__":
     app.run(debug=True,
-            port=port)
+            port=port,host="0.0.0.0")
