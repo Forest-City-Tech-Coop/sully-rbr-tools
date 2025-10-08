@@ -1,15 +1,39 @@
 import dash
-from dash import callback, html, dcc, Input, Output
+from dash import html, dcc, Input, Output
 import dash_bootstrap_components as dbc
-from .sidebar import sidebar
-dash.register_page(__name__, path="/")
+from supaproj.sidebar import sidebar
+from supaproj.webhook_storage import webhook_data_storage
+import json
 
+dash.register_page(__name__, path="/")  # register for multipage
 
-# def layout(**kwargs):
-#     return dbc.Row(
-#         [dbc.Col(sidebar(), width=2), dbc.Col(html.Div(
-#             html.H1("This is the homepage")))]
-#     )
 layout = html.Div(
-    html.H1('This is the homepage!')
+    [
+        dbc.Row(
+            [
+                dbc.Col(sidebar(), width=2),
+                dbc.Col(
+                    html.Div(
+                        [
+                            html.H1("Webhook Dashboard"),
+                            html.Div(id="webhook-display"),
+                        ]
+                    ),
+                    width=10,
+                ),
+            ]
+        ),
+        dcc.Interval(id="interval-component", interval=5*1000, n_intervals=0),
+    ]
 )
+
+
+# Callback to update webhook display
+@dash.callback(
+    Output("webhook-display", "children"),
+    Input("interval-component", "n_intervals")
+)
+def display_webhook(n_intervals):
+    if not webhook_data_storage:
+        return "Waiting for webhook data..."
+    return html.Pre(json.dumps(webhook_data_storage, indent=2))

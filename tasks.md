@@ -11,10 +11,10 @@
 
 ### Phx page
 [] set up dataframes
-    [] sum total products
+    [x] sum total products
     [] map to QB products
-[] create user-input id column (actually the filename can just be the id)
-[] generate consignment info
+[x] actually the filename can just be the id
+[x] generate consignment info
     - 85% expected check amount
     - % to each class
 [] generate csv to create invoice for phx

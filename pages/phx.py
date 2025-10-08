@@ -39,8 +39,16 @@ def parse_contents(contents, filename):
 
     except Exception as e:
         return html.Div([f"There was an error processing this file: {e}"])
+    # format the data
+    ## add id
+    new_rows = [{"Location": "Residential Collections", "Item Variation": "Consignment Fee", "Item Name": "RBR"}, {"Location": "Soil Blends", "Item Variation": "Consignment Fee", "Item Name": "RBR"}]
+    df = pd.concat([df, pd.DataFrame(new_rows)], ignore_index=True)
+    df["id"] = filename
 
-    # clean data for dollar signs and cast to floats
+
+
+
+    ## clean data for dollar signs and cast to floats
     money_columns = ['Items Sold', 'Items Refunded', 'Units Sold', 'Units Refunded', 'Gross Sales', 'Refunds', 'Discounts & Comps', 'Net Sales', 'Tax']
     int_columns = ["Location", "Item Name", "Item Variation", "SKU", "Category", "Unit"]
 
@@ -49,18 +57,33 @@ def parse_contents(contents, filename):
     for col in int_columns:
         df[col] = df[col].astype(str)
 
-    groups = df.groupby("Item Variation").sum("Gross Sales")
-    groups1 = groups.sort_values(by="Location")
-    
+    # create data groupings
+    groups = df.groupby(["Item Name","id"], as_index=False)[["Gross Sales"]].sum()
 
-    print(groups1.columns)
+    total = df["Gross Sales"].sum()
+    consign = .85
+    fee = total - (total * consign)
+    groups["Item Variation"] = "Consignment Fee"
+    groups["Consignment Fee"] = (groups["Gross Sales"] / groups["Gross Sales"].sum()) * fee
+    groups["Expected Check Total"] = total - groups['Consignment Fee'].sum() 
+
+    res_fee = groups.loc[groups["Item Name"] == "RBR"]["Consignment Fee"]
+    print(float(res_fee))
+    df.loc[df["Location"] == "Residential Collections", "Gross Sales"] = float(res_fee)
+    print(res_fee)
+    phx_txn = {}
+    phx_txn.update({"id": filename, "consignment fee": fee, "Residential Fee": float(res_fee.iloc[0]), "Soil Fee": fee - float(res_fee.iloc[0]) })
+    # phx_txn["Residential Fee"] = 5
+    # phx_txn["Soil Fee"] = 5
+    print(phx_txn)
+    print(df)
 
     # Return as DataTable
     return html.Div([
         html.H5(filename),
         dash_table.DataTable(
-            data=df.to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in df.columns],
+            data=groups.to_dict('records'),
+            columns=[{'name': i, 'id': i} for i in groups.columns],
             page_size=10,
             style_table={'overflowX': 'auto'}
         ),
