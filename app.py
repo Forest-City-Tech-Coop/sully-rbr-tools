@@ -27,7 +27,8 @@ supabase: Client = create_client(url, key)
 
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
-port = 8050
+port = 8080
+host = "0.0.0.0"
 
 @server.route("/webhook_listener", methods=["POST"])
 def webhook():
@@ -96,4 +97,4 @@ app.layout = html.Div([
 
 if __name__ == "__main__":
     app.run(debug=True,
-            port=port,host="0.0.0.0")
+            port=port,host=host)
