@@ -3,12 +3,13 @@ import sys
 from dotenv import load_dotenv
 import pandas as pd
 from supabase import create_client, Client
-from flask import Flask, request
+from flask import Flask, request, Blueprint
 import plotly.express as px
 from supaproj.webhook_storage import webhook_data_storage
 
 load_dotenv()
 server = Flask(__name__)
+webhook_bp = Blueprint('webhook_bp', __name__)
 
 @server.route("/webhook_listener", methods=["GET", "POST"])
 def webhook_listener():
