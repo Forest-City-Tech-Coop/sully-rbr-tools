@@ -10,14 +10,11 @@ from supaproj.webhook_storage import webhook_data_storage
 load_dotenv()
 server = Flask(__name__)
 
-@server.route("/webhook_listener", methods=["POST"])
-def webhook():
-    global webhook_data_storage
-    webhook_data_storage.update(request.get_json() or {})
-    print("Received webhook:", webhook_data_storage)
-    return "OK", 200
-@server.route("/webhook_listener", methods=["GET"])
-def webhook_get():
+@server.route("/webhook_listener", methods=["GET", "POST"])
+def webhook_listener():
+    if request.method == "POST":
+        print("Received:", request.get_json())
+        return "OK", 200
     return "Webhook endpoint alive", 200
     
 ######set up clients
