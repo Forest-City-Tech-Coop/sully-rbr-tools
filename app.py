@@ -36,6 +36,9 @@ def webhook():
     webhook_data_storage.update(request.get_json() or {})
     print("Received webhook:", webhook_data_storage)
     return "OK", 200
+@server.route("/webhook_listener", methods=["GET"])
+def webhook_get():
+    return "Webhook endpoint alive", 200
 
 ##### Data Functions
 page_size = 1000
