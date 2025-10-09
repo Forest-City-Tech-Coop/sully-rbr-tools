@@ -35,7 +35,7 @@ supabase: Client = create_client(url, key)
 import dash
 from dash import Dash, dcc, html, Input, Output, dash_table, callback
 import dash_bootstrap_components as dbc
-app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, server=server, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 port = 8080
 host = "0.0.0.0"
 
