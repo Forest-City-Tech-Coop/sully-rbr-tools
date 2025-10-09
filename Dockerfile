@@ -2,7 +2,7 @@
 FROM python:3.13-slim
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /supaproj
 
 # Copy the current directory contents into the container at /supaproj
 COPY . /supaproj
