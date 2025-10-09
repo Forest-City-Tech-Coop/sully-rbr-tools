@@ -5,7 +5,7 @@ import pandas as pd
 from supabase import create_client, Client
 from flask import Flask, request, Blueprint
 import plotly.express as px
-from .webhook_storage import webhook_data_storage
+from webhook_storage import webhook_data_storage
 
 load_dotenv()
 server = Flask(__name__)
