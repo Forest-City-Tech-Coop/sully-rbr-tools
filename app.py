@@ -5,7 +5,7 @@ import pandas as pd
 from supabase import create_client, Client
 from flask import Flask, request, Blueprint
 import plotly.express as px
-from supaproj.webhook_storage import webhook_data_storage
+from .webhook_storage import webhook_data_storage
 
 load_dotenv()
 server = Flask(__name__)
@@ -19,6 +19,7 @@ def webhook_listener():
     return "Webhook endpoint alive", 200
 
 server.register_blueprint(webhook_bp)
+
 ######set up clients
 ####### Supabase
 url: str = os.environ.get("SUPABASE_URL") #type: ignore
@@ -36,7 +37,7 @@ from dash import Dash, dcc, html, Input, Output, dash_table, callback
 import dash_bootstrap_components as dbc
 app = Dash(__name__, server=server, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 port = 8080
-host = "0.0.0.0"
+host = "127.0.0.1"
 
 ##### Data Functions
 page_size = 1000
