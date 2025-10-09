@@ -3,15 +3,23 @@ import sys
 from dotenv import load_dotenv
 import pandas as pd
 from supabase import create_client, Client
-from flask import request
-import dash
-from dash import Dash, dcc, html, Input, Output, dash_table, callback
-import dash_bootstrap_components as dbc
+from flask import Flask, request
 import plotly.express as px
 from supaproj.webhook_storage import webhook_data_storage
 
 load_dotenv()
+server = Flask(__name__)
 
+@server.route("/webhook_listener", methods=["POST"])
+def webhook():
+    global webhook_data_storage
+    webhook_data_storage.update(request.get_json() or {})
+    print("Received webhook:", webhook_data_storage)
+    return "OK", 200
+@server.route("/webhook_listener", methods=["GET"])
+def webhook_get():
+    return "Webhook endpoint alive", 200
+    
 ######set up clients
 ####### Supabase
 url: str = os.environ.get("SUPABASE_URL") #type: ignore
@@ -24,21 +32,12 @@ if not url or not key:
 supabase: Client = create_client(url, key)
 
 ######## Dash app
-
+import dash
+from dash import Dash, dcc, html, Input, Output, dash_table, callback
+import dash_bootstrap_components as dbc
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
-server = app.server
 port = 8080
 host = "0.0.0.0"
-
-@server.route("/webhook_listener", methods=["POST"])
-def webhook():
-    global webhook_data_storage
-    webhook_data_storage.update(request.get_json() or {})
-    print("Received webhook:", webhook_data_storage)
-    return "OK", 200
-@server.route("/webhook_listener", methods=["GET"])
-def webhook_get():
-    return "Webhook endpoint alive", 200
 
 ##### Data Functions
 page_size = 1000
