@@ -17,7 +17,8 @@ def webhook_listener():
         print("Received:", request.get_json())
         return "OK", 200
     return "Webhook endpoint alive", 200
-    
+
+server.register_blueprint(webhook_bp)
 ######set up clients
 ####### Supabase
 url: str = os.environ.get("SUPABASE_URL") #type: ignore
