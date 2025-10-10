@@ -17,4 +17,4 @@ EXPOSE 8080
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "-m", "supaproj.app.py"]
+CMD ["python", "-m", "supaproj.app"]
