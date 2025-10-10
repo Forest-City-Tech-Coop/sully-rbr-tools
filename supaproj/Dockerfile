@@ -2,10 +2,12 @@
 FROM python:3.13-slim
 
 # Set the working directory in the container
-WORKDIR /supaproj
+WORKDIR /app
+
 
 # Copy the current directory contents into the container at /supaproj
-COPY . /supaproj
+COPY . .
+
 
 # Install any needed dependencies specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
