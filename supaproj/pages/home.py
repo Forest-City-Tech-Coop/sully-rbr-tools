@@ -1,8 +1,8 @@
 import dash
 from dash import html, dcc, Input, Output
 import dash_bootstrap_components as dbc
-from supaproj.sidebar import sidebar
-from supaproj.webhook_storage import webhook_data_storage
+from ..sidebar import sidebar
+from ..webhook_storage import webhook_data_storage
 import json
 
 dash.register_page(__name__, path="/")  # register for multipage
