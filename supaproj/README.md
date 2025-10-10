@@ -16,3 +16,11 @@ ultimately, this app would be most useful if it could:
     - easily interactive (webforms rather than manual sheet entry)
 
 
+## Set up local instance
+
+1. run docker daemon
+in your terminal run:
+2. `docker build -t supaproj .`
+3. `docker run -p 8080:8080 supaproj`
+
+the local instance will be up and running at `localhost:8080`

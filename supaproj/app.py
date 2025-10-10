@@ -14,9 +14,18 @@ webhook_bp = Blueprint('webhook_bp', __name__)
 @server.route("/webhook_listener", methods=["GET", "POST"])
 def webhook_listener():
     if request.method == "POST":
-        print("Received:", request.get_json())
+        data = request.get_json()
+        print("Received:", data)
+        webhook_data_storage.update(data)
         return "OK", 200
     return "Webhook endpoint alive", 200
+
+# @server.route("/webhook_listener", methods=["GET", "POST"])
+# def webhook():
+#     data = request.get_json(force=True)
+#     # Save to database instead of global variable
+#     supabase.table("webhooks").insert(data).execute()
+#     return {"status":"ok"}, 200
 
 server.register_blueprint(webhook_bp)
 
