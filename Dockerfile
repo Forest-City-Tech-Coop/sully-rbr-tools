@@ -18,4 +18,5 @@ EXPOSE 8080
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "-m", "supaproj.app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "supaproj.app:server"]
+
