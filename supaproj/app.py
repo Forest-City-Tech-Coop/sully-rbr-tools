@@ -37,7 +37,7 @@ from dash import Dash, dcc, html, Input, Output, dash_table, callback
 import dash_bootstrap_components as dbc
 app = Dash(__name__, server=server, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 port = 8080
-host = "127.0.0.1"
+host = "0.0.0.0"
 
 ##### Data Functions
 page_size = 1000
